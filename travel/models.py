@@ -31,17 +31,26 @@ class Destination(db.Model):
     def __repr__(self):
         return f"Name: {self.name}"
 
-class Comment(db.Model):
+from datetime import datetime
+
+class Comment(db.Model): 
     __tablename__ = 'comments'
+
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(400))
-    created_at = db.Column(db.DateTime, default=datetime.now())
-    # add the foreign keys
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    
+    # Foreign keys
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     destination_id = db.Column(db.Integer, db.ForeignKey('destinations.id'))
 
     def __repr__(self):
         return f"Comment: {self.text}"
+
+    @property
+    def formatted_date(self):
+        return self.created_at.strftime("%B %d, %Y") if self.created_at else None
+
     
 class Hotel(db.Model):
     __tablename__ = 'hotels'
